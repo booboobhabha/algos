@@ -1,9 +1,9 @@
 #pragma once
 #include <iostream>
 static  const int MAX_VERTICES = 100;
+static  const int UNSET = -1;
 class baseTraversal {
 public:
-	virtual void findPath(int x, int y) = 0;
 	virtual void traverse(int x) = 0;
 	virtual bool isConnected(int x, int y) = 0;
 	virtual void countComponents() = 0;
@@ -11,10 +11,12 @@ public:
 
 	virtual void findCycle(int x) = 0;//not done in bfs
 	virtual bool hasCycle() = 0;//not done in bfs
+	enum edgeTypes { UNKNOWN = 1, TREE = 2, BACK = 3, CROSS = 4, FORWARD = 5, COUNT = 6 };
+	
 };
 class edgeNode {
 private:
-	int y{ -1 };
+	int y{ UNSET };
 	edgeNode* next{ nullptr };
 public:
 	edgeNode(int _y, edgeNode* _node) : y{ _y }, next{ _node }{}
@@ -44,14 +46,27 @@ protected:
 	virtual void initSearch() {
 		for (int i = 0; i < MAX_VERTICES; i++) {			
 			discovered[i] = false;
-			parents[i] = -1;
+			parents[i] = UNSET;
 			processed[i] = false;
-			componentIds[i] = -1;
+			componentIds[i] = UNSET;
 			color[i] = 0;
 		}
 		components = 0;
 		finished = false;
 		isTwoColor = true;
+	}
+	virtual void findPath(int x, int y, bool print) {
+		if (x == y) {
+			std::cout << x;
+			return;
+		}
+		if (y == UNSET) {
+			std::cout << "\tPath does not exist";
+			return;
+		}
+		std::cout << y << "->";
+		findPath(x, parents[y], print);
+
 	}
 	int getOppositeColor(int x) {
 		if (x == 1) return 2;
@@ -64,14 +79,22 @@ public:
 			edges[i] = nullptr;
 			discovered[i] = false;
 			processed[i] = false;
-			parents[i] = -1;
+			parents[i] = UNSET;
 			degree[i] = 0;
-			componentIds[i] = -1;
+			componentIds[i] = UNSET;
 			color[i] = 0;			
 		}
 		components = 0;
 		finished = false;
 		isTwoColor = true;
+	}
+	void findPath(int x, int y) {
+		if (x > MAX_VERTICES || y > MAX_VERTICES) {
+			std::cout << "\n" << x << " is not connected with " << y << ". Please check vertex\n";
+			return;
+		}
+		std::cout << "\nFinding Path from " << x << " to " << y << std::endl;
+		findPath(x, y, true);
 	}
 	edgeNode* getEdge(int v) { return edges[v]; }
 	void addEdge(int x, int y) {addEdge(x, y, false);}

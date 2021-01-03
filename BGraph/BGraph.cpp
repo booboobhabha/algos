@@ -3,11 +3,46 @@
 
 #include <iostream>
 #include "bfs.h"
+#include "dfs.h"
+
 int main()
 {
-    bfs g;
+    dfs g;
+    g.addEdge(1, 2);
+    g.addEdge(1, 3);
+    g.addEdge(2, 4);
+    g.addEdge(3, 4);
+    g.addEdge(4, 5);
+    g.addEdge(4, 6);
+    g.addEdge(5, 7);
+    g.addEdge(5, 8);
+    g.addEdge(6, 7);
+    g.addEdge( 7,9);
+    g.addEdge(8, 9);
+    g.addEdge(8, 10);
+    g.addEdge(9, 10);
+    g.print();
+    g.traverse(1);
+
+
+ /*   g.addEdge(1, 2);
+    g.addEdge(1, 7);
+    g.addEdge(1, 8);
+    g.addEdge(2, 7);
+    g.addEdge(2, 3);
+    g.addEdge(2, 5);
+    g.addEdge(3, 4);
+    g.addEdge(3, 5);
+    g.addEdge(4, 5);
+    g.addEdge(5, 6);*/
+   // g.print();
+    //g.traverse(1);
+  //  g.hasCycle();
+   // g.traverse(1);
+    return 1;
+
     //s=0, a=1, x=2, z=3, c=4, d=5, f=6, v=7
-    g.addEdge(0, 1); //s,a
+    /*g.addEdge(0, 1); //s,a
     g.addEdge(0, 2);//s,x
     g.addEdge(1, 3);//a,z
     g.addEdge(2, 4);//x,c
@@ -16,7 +51,7 @@ int main()
     g.addEdge(4, 6);//c,f
     g.addEdge(4, 7);//c,v
     g.addEdge(5, 6);//d,f
-    g.addEdge(6, 7);//f,v
+    g.addEdge(6, 7);//f,v*/
 
 
     /*g.addEdge(0, 1);

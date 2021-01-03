@@ -22,6 +22,8 @@ class bfs : public bGraph, public baseTraversal {
 			//Each edge of the connected component is touched twice for undirected and once for directed
 			//Each vertex is touched only once outside of the while loop of the connected component
 			//time complexity to traverse using bfs is O(E + V) i-e linear complexity
+			//The outer loop touches each vertex only once. So O(V). The inner loop runs through the degree of each vertex. So O(V) + Sum of degree of each vertex. 
+			//Sum of all degrees is really the number of edges and we touch each edge twice in an undirected graph. There O(V) + O(2E) which is equal to O(V+E).
 			//It first discovers a vertex and then discovers all adjacent nodes and add them to a queue.
 			//One it finishes discovering all adjacent nodes, the vertex is considered processed.
 			//It then picks the next item from the queue (which was one of the adjacent nodes of the vertex just finished processing) and repeats the process
@@ -30,6 +32,12 @@ class bfs : public bGraph, public baseTraversal {
 			//Except for root node, each vertex has a processed adjacent node.
 			//traversing with bfs creates a tree with start node as the root.
 			//confirm this...If there are no cycles then 3 should be a parent of 4 and 4 should be a parent of 3. parent[x]==y and parent[y]==x if both x and  y are discovered. If not then there must be cycle.
+			//For inner loop, if the adjuacent vertex y is already processed this means all the incident edges were already visited/processed. Therefore we dont want to visit an edge again. Hence, the first if condition of inner loop
+			//If adjacent vertex was not discovered, we add it to the queue for later processing.
+			//Complexity of component count is also O(M+N) because even for disconnected components, we visit each vertex once and edges twice. 
+			//In a discovery tree of BFS, there can not be any back edge from a lower child to its upper ancestor because the ancestor would have discovered it when ancestor was traversing its own child
+			//Similarly an ancestor cant have a link with a non-immediate descendant for the same reason.
+			//There can only be tree edges or a cross edge where cross edge is an edge between brothers and the two vertex are niether descendants or ancestor of each other
 			int x, y;
 			
 			std::queue<int> fifo;
@@ -59,19 +67,7 @@ class bfs : public bGraph, public baseTraversal {
 				processed[x] = true;
 			}
 		}
-		void findPath(int x, int y, bool print) {
-			if (x == y) {
-				std::cout << x;
-				return;
-			}
-			if (y == -1) {
-				std::cout << "\tPath does not exist";
-				return;
-			}
-			std::cout << y << "->";
-			findPath(x, parents[y], print);
-
-		}
+		
 public: 
 	void traverse(int x) override { initSearch(); traverse(x, true); }
 	bool isConnected(int x, int y) {
@@ -94,15 +90,6 @@ public:
 			}
 		}
 		std::cout << "\nComponent Count is:" << components;
-	}
-	void findPath (int x, int y) override {
-		if (x > MAX_VERTICES || y > MAX_VERTICES ) {
-			std::cout << "\n" << x << " is not connected with " << y << ". Please check vertex\n";
-			return;
-		}
-		traverse(x);
-		std::cout << "\nFinding Path from " << x << " to " << y << std::endl;
-		findPath(x, y, true);
 	}
 	
 	void findCycle (int x) override {}

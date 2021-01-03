@@ -144,6 +144,7 @@
   <ItemGroup>
     <ClInclude Include="bfs.h" />
     <ClInclude Include="BGraph.h" />
+    <ClInclude Include="dfs.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

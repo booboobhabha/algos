@@ -26,5 +26,8 @@
     <ClInclude Include="bfs.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="dfs.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
